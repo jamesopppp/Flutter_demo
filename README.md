@@ -1,6 +1,6 @@
 # startup_namer
 
-A new Flutter application.
+Flutter 官网demo 尝鲜!  打包到手机运行感觉不错,未发现卡顿,可是我觉得学习成本很高,还要会dart语法...不知道Flutter以后会怎么改动呢~
 
 ## Getting Started
 
