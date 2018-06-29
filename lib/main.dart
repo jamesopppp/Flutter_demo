@@ -8,6 +8,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return new MaterialApp(
       title: 'Startup Name Generator',
+      theme: new ThemeData(
+        primaryColor: Colors.white,
+      ),
       home: new RandomWords(),
     );
   }
@@ -23,14 +26,44 @@ class RandomWordsState extends State<RandomWords> {
   final _suggestions = <WordPair>[];
   final _saved = new Set<WordPair>();
   final _biggerFont = const TextStyle(fontSize: 18.0);
+  void _pushSaved() {
+    Navigator.of(context).push(
+      new MaterialPageRoute(
+        builder: (context) {
+          final tiles = _saved.map(
+                (pair) {
+              return new ListTile(
+                title: new Text(
+                  pair.asPascalCase,
+                  style: _biggerFont,
+                ),
+              );
+            },
+          );
+          final divided = ListTile
+              .divideTiles(
+            context: context,
+            tiles: tiles,
+          )
+              .toList();
+          return new Scaffold(
+            appBar: new AppBar(
+              title: new Text('Saved Suggestions'),
+            ),
+            body: new ListView(children: divided),
+          );
+        },
+      ),
+    );
+  }
 
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
         title: new Text('Startup Name Generator'),
-//        actions: <Widget>[
-//          new IconButton(icon: new Icon(Icons.list), onPressed: _pushSaved),
-//        ],
+        actions: <Widget>[
+          new IconButton(icon: new Icon(Icons.list), onPressed: _pushSaved),
+        ],
       ),
       body: _buildSuggestions(),
     );
@@ -44,8 +77,7 @@ class RandomWordsState extends State<RandomWords> {
         _suggestions.addAll(generateWordPairs().take(10));
       }
       return _buildRow(_suggestions[index]);
-    }
-    );
+    });
   }
 
   Widget _buildRow(WordPair pair) {
